@@ -30,7 +30,7 @@ void setup()
 }
 
 // WSJTX helper functions
-uint8 getuInt8()
+uint8 readuInt8()
 {
   uint8 val;
   memcpy(&val, &WSJTX_incomingByteArray[WSJTX_currentIndex], sizeof(val));
@@ -38,7 +38,7 @@ uint8 getuInt8()
   return val;
 }
 
-uint32 getuInt32()
+uint32 readuInt32()
 {
   uint32 bigEndianValue;
   memcpy(&bigEndianValue, &WSJTX_incomingByteArray[WSJTX_currentIndex], sizeof(bigEndianValue));
@@ -47,7 +47,7 @@ uint32 getuInt32()
   return theUnpackedValue;
 }
 
-int32 getInt32()
+int32 readInt32()
 {
   int32 bigEndianValue;
   memcpy(&bigEndianValue, &WSJTX_incomingByteArray[WSJTX_currentIndex], sizeof(bigEndianValue));
@@ -56,7 +56,7 @@ int32 getInt32()
   return theUnpackedValue;
 }
 
-uint64 getuInt64()
+uint64 readuInt64()
 {
   uint64 bigEndianValue;
   memcpy(&bigEndianValue, &WSJTX_incomingByteArray[WSJTX_currentIndex], sizeof(bigEndianValue));
@@ -65,7 +65,7 @@ uint64 getuInt64()
   return theUnpackedValue;
 }
 
-bool getBool()
+bool readBool()
 {
   bool val;
   memcpy(&val, &WSJTX_incomingByteArray[WSJTX_currentIndex], sizeof(val));
@@ -87,12 +87,12 @@ void loop()
       WSJTX_currentIndex = 8; // skip packet header
 
       // Packet Type
-      uint32 WSJTX_packetType = getuInt32();
+      uint32 WSJTX_packetType = readuInt32();
       if (WSJTX_packetType == 1)
       {
         //--------------------------------------------------------------------//
         // Client id
-        int32 WSJTX_clientIdLength = getInt32();
+        int32 WSJTX_clientIdLength = readInt32();
         char WSJTX_clientId[WSJTX_clientIdLength + 1];
         for (int32 i = 0; i < WSJTX_clientIdLength; i++)
         {
@@ -103,11 +103,11 @@ void loop()
 
         //--------------------------------------------------------------------//
         // Dial Frequency
-        uint64 WSJTX_dialFrequency = getuInt64();
+        uint64 WSJTX_dialFrequency = readuInt64();
 
         //--------------------------------------------------------------------//
         // Mode
-        int32 WSJTX_modeLength = getInt32();
+        int32 WSJTX_modeLength = readInt32();
         char WSJTX_mode[WSJTX_modeLength + 1];
         for (int32 i = 0; i < WSJTX_modeLength; i++)
         {
@@ -118,7 +118,7 @@ void loop()
 
         //--------------------------------------------------------------------//
         // DX Call
-        int32 WSJTX_dxCallLength = getInt32();
+        int32 WSJTX_dxCallLength = readInt32();
         char WSJTX_dxCall[WSJTX_dxCallLength + 1];
         for (int32 i = 0; i < WSJTX_dxCallLength; i++)
         {
@@ -129,7 +129,7 @@ void loop()
 
         //--------------------------------------------------------------------//
         // Report
-        int32 WSJTX_reportLength = getInt32();
+        int32 WSJTX_reportLength = readInt32();
         char WSJTX_report[WSJTX_reportLength + 1];
         for (int32 i = 0; i < WSJTX_reportLength; i++)
         {
@@ -140,7 +140,7 @@ void loop()
 
         //--------------------------------------------------------------------//
         // Tx mode
-        int32 WSJTX_txModeLength = getInt32();
+        int32 WSJTX_txModeLength = readInt32();
         char WSJTX_txMode[WSJTX_txModeLength + 1];
         for (int32 i = 0; i < WSJTX_txModeLength; i++)
         {
@@ -151,27 +151,27 @@ void loop()
 
         //--------------------------------------------------------------------//
         // Tx Enabled
-        bool WSJTX_txEnabled = getBool();
+        bool WSJTX_txEnabled = readBool();
 
         //--------------------------------------------------------------------//
         // Transmitting
-        bool WSJTX_transmitting = getBool();
+        bool WSJTX_transmitting = readBool();
 
         //--------------------------------------------------------------------//
         // Decoding
-        bool WSJTX_decoding = getBool();
+        bool WSJTX_decoding = readBool();
 
         //--------------------------------------------------------------------//
         // Rx DF
-        uint32 WSJTX_rxDrift = getuInt32();
+        uint32 WSJTX_rxDrift = readuInt32();
 
         //--------------------------------------------------------------------//
         // Tx DF
-        uint32 WSJTX_txDrift = getuInt32();
+        uint32 WSJTX_txDrift = readuInt32();
 
         //--------------------------------------------------------------------//
         // DE call
-        int32 WSJTX_deCallLength = getInt32();
+        int32 WSJTX_deCallLength = readInt32();
         char WSJTX_deCall[WSJTX_deCallLength + 1];
         for (int32 i = 0; i < WSJTX_deCallLength; i++)
         {
@@ -182,7 +182,7 @@ void loop()
 
         //--------------------------------------------------------------------//
         // DE grid
-        int32 WSJTX_deGridLength = getInt32();
+        int32 WSJTX_deGridLength = readInt32();
         char WSJTX_deGrid[WSJTX_deGridLength + 1];
         for (int32 i = 0; i < WSJTX_deGridLength; i++)
         {
@@ -193,7 +193,7 @@ void loop()
 
         //--------------------------------------------------------------------//
         // DX grid
-        int32 WSJTX_dxGridLength = getInt32();
+        int32 WSJTX_dxGridLength = readInt32();
         char WSJTX_dxGrid[WSJTX_dxGridLength + 1];
         for (int32 i = 0; i < WSJTX_dxGridLength; i++)
         {
@@ -204,11 +204,11 @@ void loop()
 
         //--------------------------------------------------------------------//
         // Tx Watchdog
-        bool WSJTX_txWatchdog = getBool();
+        bool WSJTX_txWatchdog = readBool();
 
         //--------------------------------------------------------------------//
         // Sub-mode
-        int32 WSJTX_subModeLength = getInt32();
+        int32 WSJTX_subModeLength = readInt32();
         char WSJTX_subMode[WSJTX_subModeLength + 1];
         for (int32 i = 0; i < WSJTX_subModeLength; i++)
         {
@@ -219,22 +219,22 @@ void loop()
 
         //--------------------------------------------------------------------//
         // Fast mode
-        bool WSJTX_fastMode = getBool();
+        bool WSJTX_fastMode = readBool();
 
         //--------------------------------------------------------------------//
         // Special Operation Mode
-        uint8 WSJTX_specialOpMode = getuInt8();
+        uint8 WSJTX_specialOpMode = readuInt8();
 
         // Frequency Tolerance
-        uint32 WSJTX_frequencyToletance = getuInt32();
+        uint32 WSJTX_frequencyToletance = readuInt32();
 
         //--------------------------------------------------------------------//
         // T/R Period
-        uint32 WSJTX_txrxPeriod = getuInt32();
+        uint32 WSJTX_txrxPeriod = readuInt32();
 
         //--------------------------------------------------------------------//
         // Configuration Name
-        int32 WSJTX_configNameLength = getInt32();
+        int32 WSJTX_configNameLength = readInt32();
         char WSJTX_configName[WSJTX_configNameLength + 1];
         for (int32 i = 0; i < WSJTX_configNameLength; i++)
         {
@@ -245,7 +245,7 @@ void loop()
 
         //--------------------------------------------------------------------//
         // Tx Message
-        int32 WSJTX_txMessageLength = getInt32();
+        int32 WSJTX_txMessageLength = readInt32();
         char WSJTX_txMessage[WSJTX_txMessageLength + 1];
         for (int32 i = 0; i < WSJTX_txMessageLength; i++)
         {
@@ -254,8 +254,8 @@ void loop()
         }
         WSJTX_txMessage[WSJTX_txMessageLength] = 0;
 
-        Serial.printf("txOn: %s, freq: %lld, msg: %s", WSJTX_transmitting ? "true" : "false", WSJTX_dialFrequency, WSJTX_txMessage);
-        Serial.printf("Time taken : %ld", millis() - now);
+        Serial.printf("txOn: %s, freq: %lld, msg: %s\n", WSJTX_transmitting ? "true" : "false", WSJTX_dialFrequency, WSJTX_txMessage);
+        Serial.printf("Time taken : %ld\n", millis() - now);
       }
     }
   }
